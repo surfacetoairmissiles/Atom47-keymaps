@@ -6,14 +6,14 @@
 // entirely and just use numbers.
 
 #define _MA 0 //Main layer
-#define _PN 1 //Fn
-#define _FN1 2 //Fn1
-#define _FN 3 //Pn
+#define _PN 2 //Fn
+#define _FN1 3 //Fn1
+#define _FN 4 //Pn
 
 //These layers add an arrow keys cluster to alt, menu, ctrl, and shift
 //Theoritically this will be toggleable from win+lAlt+rSpace
 
-#define _Arrows 4 //Main layer w/ arrows
+#define _Arrows 1 //Main layer w/ arrows
 
 
 
