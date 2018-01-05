@@ -139,9 +139,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 print("enabling rgb");
                 rgblight_enable();
                 rgblight_setrgb(64, 64, 64);
-              return false; break;
+              return true; break;
             case KC_LGUI:
-              print{"winkey"}
+              print("winkey")
              return true; break;
        }
     }
