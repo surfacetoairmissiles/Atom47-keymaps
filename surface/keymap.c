@@ -128,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 enum custom_keycodes {
-    RIGHT_SPACEBAR = 0xa5
+    RIGHT_SPACEBAR = 0xa5 //This was an experiment in custom keycodes. This one will shut down your computer fyi.
 };
 
 
@@ -136,7 +136,9 @@ enum custom_keycodes {
 #define MOD_WIN_MASK  (MOD_BIT(KC_LGUI))
 #define MOD_ALT_MASK  (MOD_BIT(KC_LALT))
 #define MOD_SPC_MASK  (MOD_BIT(KC_SPC))
+bool Arrowlayer = false; //Theres probably a better way to access whether we are on the arrow layer but i dont know how to retrieve the current layer
 
+//These are all the key interrupts
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch(keycode) {
@@ -156,6 +158,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                   unregister_code(KC_LGUI);
                   unregister_code(KC_LALT);
                   unregister_code(KC_SPC);
+
+                  if(Arrowlayer)
+                    {
+                      TO(_MA);
+                      Arrowlayer= false;
+                    }
+
+                  else
+                    {
+                      TO(_Arrows);
+                      Arrowlayer = true;
+                    }
+    
                   println("macro achieved");
                   
                   return false; break;
