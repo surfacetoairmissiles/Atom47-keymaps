@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,   KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_DEL,   KC_BSPC,  \
   KC_TAB,   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,        KC_ENT,   \
   KC_LSFT,    KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM,  KC_DOT,   KC_RSFT,        MO(_FN1), \
-  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  0xaf,         KC_SPC,         MO(_PN),  KC_RALT,  KC_APP,         KC_RCTRL),  \
+  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  KC_SPC,         KC_SPC,         MO(_PN),  KC_RALT,  KC_APP,         KC_RCTRL),  \
  
 
   /* FN Layer
@@ -92,7 +92,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////Arrows Layer Begins///////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,   KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_DEL,   KC_BSPC,  \
   KC_TAB,   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,        KC_ENT,   \
   KC_LSFT,    KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM,  KC_DOT,   KC_UP,        MO(_FN1), \
-  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  0xaf,         KC_SPC,         MO(_PN),  KC_LEFT,  KC_DOWN,         KC_RIGHT),  \
+  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  KC_SPC,         KC_SPC,         MO(_PN),  KC_LEFT,  KC_DOWN,         KC_RIGHT),  \
 
 
 
@@ -129,22 +128,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 enum custom_keycodes {
-    RIGHT_SPACEBAR = 0xaf
+    RIGHT_SPACEBAR = 0xa5
 };
+
+
+//This lot are masks for the macro
+#define MOD_WIN_MASK  (MOD_BIT(KC_LGUI))
+#define MOD_ALT_MASK  (MOD_BIT(KC_LALT))
+#define MOD_SPC_MASK  (MOD_BIT(KC_SPC))
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch(keycode) {
-            case RIGHT_SPACEBAR:
+            case RIGHT_SPACEBAR://This is just an rgb test
                 print("enabling rgb");
                 rgblight_enable();
                 rgblight_setrgb(64, 64, 64);
               return true; break;
-            case KC_LGUI:
-              print("winkey");
+            
+
+
+            //This is the code for the arrow cluster toggle macro. Because of the way I coded this you need to press win + alt, then spacebar last
+            //This is because i didn't want to do 3 times the checks just so it could be entered in an unnatural order.
+            case KC_SPC:
+              if (record->event.pressed) {
+                if ((keyboard_report->mods & MOD_ALT_MASK) && (keyboard_report->mods & MOD_WIN_MASK)) {
+                  unregister_code(KC_LGUI);
+                  unregister_code(KC_LALT);
+                  unregister_code(KC_SPC);
+                  println("macro achieved");
+                  
+                  return false; break;
+                }
+              }
              return true; break;
        }
     }
     
     return true;
-};
+};  
+
+  
