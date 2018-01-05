@@ -1,4 +1,7 @@
 #include "atom47.h" //I have no idea if this is best practice but MK_KEYBOARD_H caused an error
+#include "led.h"
+#include "rgblight.h"
+
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -16,6 +19,10 @@
 #define _Arrows 1 //Main layer w/ arrows
 
 
+//These are the modifier keys i use in macros
+#define MODS_SHIFT_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
+#define MODS_CTRL_MASK  (MOD_BIT(KC_LCTL)|MOD_BIT(KC_RCTRL))
+#define MODS_ALT_MASK  (MOD_BIT(KC_LALT)|MOD_BIT(KC_RALT))
 
 #define _______ KC_TRNS
 
@@ -129,10 +136,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch(keycode) {
             case RIGHT_SPACEBAR:
-                SEND_STRING("QMK is the best thing ever!");
-                return false; break;
-        }
+                print("enabling rgb");
+                rgblight_enable();
+                rgblight_setrgb(64, 64, 64);
+              return false; break;
+            case KC_LGUI:
+              print{"winkey"}
+             return true; break;
+       }
     }
+    
     return true;
 };
-QMK is the best thing ever!QMK is the best thing ever!

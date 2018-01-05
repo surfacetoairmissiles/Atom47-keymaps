@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONFIG_H
+
 #define CONFIG_H
 
 #include "config_common.h"
@@ -63,11 +63,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #define BACKLIGHT_LEVELS 4
 
-#endif
 
 #define RGB_DI_PIN D0    // The pin the LED strip is connected to
+#ifdef RGB_DI_PIN
+//#define RGBLIGHT_ANIMATIONS       
 #define RGBLED_NUM 1     // Number of LEDs in your strip
+#define RGBLIGHT_HUE_STEP 8
+#define RGBLIGHT_SAT_STEP 8
+#define RGBLIGHT_VAL_STEP 8
+#endif
 
 #define QMK_ESC_OUTPUT D7 // usually COL
 #define QMK_ESC_INPUT B1 // usually ROW
 #define QMK_LED B6
+
