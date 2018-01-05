@@ -1,5 +1,6 @@
 #include "atom47.h"
 #include "led.h"
+#include "rgblight.h"
 
 void matrix_init_kb(void) {
 	// put your keyboard start-up code here
