@@ -3,6 +3,7 @@
 #include "rgblight.h"
 
 
+
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
@@ -44,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,   KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_DEL,   KC_BSPC,  \
   KC_TAB,   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,        KC_ENT,   \
   KC_LSFT,    KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM,  KC_DOT,   KC_RSFT,        MO(_FN1), \
-  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  KC_SPC,         KC_SPC,         MO(_PN),  KC_RALT,  KC_APP,         KC_RCTRL),  \
+  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  KC_SPC,         KC_SPC,      KC_RALT,  KC_APP,  MO(_PN),         KC_RCTRL),  \
  
 
   /* FN Layer
@@ -113,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,   KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_DEL,   KC_BSPC,  \
   KC_TAB,   KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,        KC_ENT,   \
   KC_LSFT,    KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM,  KC_DOT,   KC_UP,        MO(_FN1), \
-  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  KC_SPC,         KC_SPC,         MO(_PN),  KC_LEFT,  KC_DOWN,         KC_RIGHT),  \
+  KC_LCTL,    KC_LGUI,  KC_LALT,  MO(_FN),  KC_SPC,         KC_SPC,        KC_RALT,  KC_LEFT,  KC_DOWN,         KC_RIGHT),  \
 
 
 
@@ -155,20 +156,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             case KC_SPC:
               if (record->event.pressed) {
                 if ((keyboard_report->mods & MOD_ALT_MASK) && (keyboard_report->mods & MOD_WIN_MASK)) {
-                  unregister_code(KC_LGUI);
+                  unregister_code(KC_LGUI); //These disable the keypressses
                   unregister_code(KC_LALT);
-                  unregister_code(KC_SPC);
+                  unregister_code(KC_SPC); //They may not actually be neccicary but what the hey
 
                   if(Arrowlayer)
                     {
-                      TO(_MA);
+                    //  SEND_STRING(SS_TAP(X_TO(_MA))); //This doesn't work
+                     // TO(_MA); //Nope
+                     SEND_STRING(SS_TAP(TO(_MA)));
                       Arrowlayer= false;
+                      println("On regular layer ");
                     }
 
                   else
                     {
-                      TO(_Arrows);
+                     // SEND_STRING(SS_TAP(X_TO(_ARROWS)));
                       Arrowlayer = true;
+                      println("On Arrowlayer");
                     }
     
                   println("macro achieved");
