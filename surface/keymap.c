@@ -1,6 +1,7 @@
 #include "atom47.h" //I have no idea if this is best practice but MK_KEYBOARD_H caused an error
 #include "led.h"
 #include "rgblight.h"
+#include "quantum.h"
 
 
 
@@ -163,15 +164,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                   if(Arrowlayer)
                     {
                     //  SEND_STRING(SS_TAP(X_TO(_MA))); //This doesn't work
-                     // TO(_MA); //Nope
-                     SEND_STRING(SS_TAP(TO(_MA)));
+                      TO(_MA); //Nope
                       Arrowlayer= false;
                       println("On regular layer ");
+                      TO(_Arrows);
                     }
 
                   else
                     {
-                     // SEND_STRING(SS_TAP(X_TO(_ARROWS)));
+                      TO(_Arrows); //Nope
                       Arrowlayer = true;
                       println("On Arrowlayer");
                     }
@@ -187,5 +188,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     
     return true;
 };  
-
-  
