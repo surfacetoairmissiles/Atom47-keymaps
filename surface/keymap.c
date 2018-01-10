@@ -164,15 +164,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                   if(Arrowlayer)
                     {
                     //  SEND_STRING(SS_TAP(X_TO(_MA))); //This doesn't work
-                      TO(_MA); //Nope
+                      layer_off(_Arrows); //Nope
                       Arrowlayer= false;
                       println("On regular layer ");
-                      TO(_Arrows);
                     }
 
                   else
                     {
-                      TO(_Arrows); //Nope
+                      layer_on(_Arrows); //Nope
                       Arrowlayer = true;
                       println("On Arrowlayer");
                     }
